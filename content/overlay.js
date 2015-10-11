@@ -40,9 +40,7 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
         if (fileEOL !== globalEOL) {
             notify.send(
                 'Current file EOL ' + fileEOL + ' mismatch global configuration ' + globalEOL,
-                'line-endings-event',
-                1000,
-                false
+                'tools'
             );
         }
     }
