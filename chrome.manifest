@@ -1,0 +1,2 @@
+content EOL_widget content/
+overlay chrome://komodo/content/komodo.xul chrome://EOL_widget/content/overlay.xul
