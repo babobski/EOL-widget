@@ -6,7 +6,7 @@
         <em:id>EOL-widget@babobski.com</em:id>
         <em:name>EOL Widget</em:name>
         <em:version>1.0</em:version>
-        <em:description>Adds the file EOL to komodo status bar</em:description>
+        <em:description>Shows the current file EOL settings in the statusbar</em:description>
         <em:creator>Bob de Haas</em:creator>
 		<em:iconURL>chrome://EOL_widget/content/EOL_widget-icon.png</em:iconURL>
         <em:homepageURL></em:homepageURL>
