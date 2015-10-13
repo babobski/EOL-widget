@@ -25,9 +25,12 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
 
     var timer, timerRunning;
     extensions.addEOL = function(){
-        if (timerRunning) return;
-        timer = setTimeout(addEOL, 500);
-        timerRunning = true;
+        var scimoz = ko.views.manager.currentView.scimoz;
+        if (scimoz == undefined){
+            return;
+        }
+        
+        label.attr('value', eol[scimoz.eOLMode]);
     };
     
     extensions.checkEOL = function() {
@@ -48,15 +51,5 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
     window.addEventListener('current_view_changed', extensions.addEOL);
     window.addEventListener('focus', extensions.addEOL);
     window.addEventListener('view_opened', extensions.checkEOL);
-
-    function addEOL() {
-        timerRunning = false;
-        var scimoz = ko.views.manager.currentView.scimoz;
-        if (scimoz == undefined){
-            return;
-        }
-        
-        label.attr('value', eol[scimoz.eOLMode]);
-    }
 
 }).apply(extensions.EOL_widget);
