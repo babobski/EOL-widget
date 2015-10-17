@@ -25,8 +25,12 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
 
     var timer, timerRunning;
     extensions.addEOL = function(){
-        var scimoz = ko.views.manager.currentView.scimoz;
-        if (scimoz == undefined){
+        var view = ko.views.manager.currentView;
+		if (view == null){
+            return;
+        }
+		var scimoz = view.scimoz;
+        if (scimoz === undefined){
             return;
         }
         
@@ -34,10 +38,15 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
     };
     
     extensions.checkEOL = function() {
-        var scimoz = ko.views.manager.currentView.scimoz;
-        if (scimoz == undefined) {
+       var view = ko.views.manager.currentView;
+		if (view == null){
             return;
         }
+		var scimoz = view.scimoz;
+        if (scimoz === undefined){
+            return;
+        }
+		
         var fileEOL 	= eol[scimoz.eOLMode];
         var globalEOL 	= ko.prefs.getString('endOfLine');
         if (fileEOL !== globalEOL) {
