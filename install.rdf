@@ -11,6 +11,8 @@
 		<em:iconURL>chrome://EOL_widget/content/EOL_widget-icon.png</em:iconURL>
         <em:homepageURL></em:homepageURL>
         <em:type>2</em:type> <!-- type=extension -->
+		
+		<em:optionsURL>chrome://EOL_widget/content/pref-overlay.xul</em:optionsURL>
 
         <em:targetApplication>
             <Description>
