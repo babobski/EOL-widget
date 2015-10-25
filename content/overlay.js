@@ -92,6 +92,8 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
 		koDoc.new_line_endings = eol;
 		
 		if (override) koDoc.existing_line_endings = eol;
+		
+		this.addEOL();
 	}
 
 
