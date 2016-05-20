@@ -3,69 +3,89 @@
  */
 if (typeof(extensions) === 'undefined') extensions = {};
 if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
-	version: '1.0'
+	version: '2.1'
 };
 
 (function() {
 	
-    var $       = require("ko/dom");
-	var notify	= require("notify/notify");
-    var eol     = ['CRLF', 'CR', 'LF'];
- 
+    var $       	= require("ko/dom"),
+		notify		= require("notify/notify"),
+		eol     	= ['CRLF', 'CR', 'LF'],
+		self		= this;
+	
+	
     window.removeEventListener('current_view_changed', this.addEOL);
     window.removeEventListener('focus', this.addEOL);
     window.removeEventListener('view_opened', this.checkEOL);
-
-    $("#statusbar-eol").remove();
-    $("#statusbar-encoding").before($("<statusbarpanel tooltiptext='File Line Ending' id='statusbar-eol'/>"));
-	var menu 		= $('<menupopup id="statusbar-eol-menupopup"/>');
-	var itemCRLF 	= $('<menuitem label="CRLF" oncommand="extensions.EOL_widget.setEol(\'CRLF\');" />');
-	var itemLF		= $('<menuitem label="LF" oncommand="extensions.EOL_widget.setEol(\'LF\');" />');
-	var item		= $('<menuitem label="CR" oncommand="extensions.EOL_widget.setEol(\'CR\');" />');
-	menu.append(itemCRLF);
-	menu.append(itemLF); 
-	menu.append(item);
 	
-    var panel   	= $('#statusbar-eol');
-    panel.append('<toolbarbutton class="statusbar-label" id="statusbar-eol-label" flex="1" orient="horizontal" type="menu" persist="buttonstyle" buttonstyle="text" label="" />');
-    var button = $('#statusbar-eol > #statusbar-eol-label');
+	this.addPanel = function(){
+		var view 	= $(require("ko/views").current().get()),
+		EOLpanel	= $("<statusbarpanel id='eol_widget' />"),
+		menu 		= $('<menupopup id="statusbar-eol-menupopup"/>'),
+		itemCRLF 	= $('<menuitem label="CRLF" oncommand="extensions.EOL_widget.setEol(\'CRLF\');" />'),
+		itemLF		= $('<menuitem label="LF" oncommand="extensions.EOL_widget.setEol(\'LF\');" />'),
+		item		= $('<menuitem label="CR" oncommand="extensions.EOL_widget.setEol(\'CR\');" />');
+		
+		view.findAnonymous("anonid", "statusbar-encoding").before(EOLpanel);
+		
+		menu.append(itemCRLF);
+		menu.append(itemLF); 
+		menu.append(item);
+		
+		var panel   = view.find('#eol_widget');
+		
+		panel.append('<toolbarbutton class="statusbar-label" id="statusbar-eol-label" flex="1" orient="horizontal" type="menu" persist="buttonstyle" buttonstyle="text" label="" />');
+		
+		var button = $('#eol_widget > #statusbar-eol-label');
+		
+		button.append(menu);
+		
+	}
 	
-	button.append(menu); 
-
-    var timer, timerRunning;
     this.addEOL = function(){ 
-		var koDoc 	= require('ko/views').current().koDoc;
-		var prefs 	= require('ko/views').current().prefs;
-        var view = ko.views.manager.currentView;
-		if (view == null){
+		var koDoc 	= require('ko/views').current().koDoc,
+			prefs 	= require('ko/views').current().prefs,
+			view 	= ko.views.manager.currentView,
+			currV	= require("ko/views").current().get(),
+			panel   = $(currV).find('#eol_widget'),
+			button 	= $(currV).find('#statusbar-eol-label');
+			
+		if (view.length === 0){
             return;
         }
+		
+		if (panel.length === 0){
+			self.addPanel();
+			button 	= $(currV).find('#statusbar-eol-label');
+		}
+		
 		var scimoz = view.scimoz;
         if (scimoz === undefined){
             return;
         }
-        
+		
         button.attr('label', prefs.getString('endOfLine'));
     };
     
     this.checkEOL = function() {
-       var view = ko.views.manager.currentView;
-	   var koDoc 	= require('ko/views').current().koDoc;
-		var prefs 	= require('ko/views').current().prefs;
-		if (view == null){
+		var view 	= ko.views.manager.currentView,
+			koDoc 	= require('ko/views').current().koDoc,
+			prefs 	= require('ko/views').current().prefs;
+			
+		if (view.length === 0){
             return;
         }
+		
 		var scimoz = view.scimoz;
         if (scimoz === undefined){
             return;
         }
 		
-		var prefs = require('ko/views').current().prefs; 
 		if ( ! prefs) return;
 		
 		
-        var fileEOL 	= prefs.getString('endOfLine');
-        var globalEOL 	= ko.prefs.getString('endOfLine');
+        var fileEOL 	= prefs.getString('endOfLine'),
+			globalEOL 	= ko.prefs.getString('endOfLine');
         if (fileEOL !== globalEOL) {
             notify.send(
                 'Current file EOL ' + fileEOL + ' mismatch global configuration ' + globalEOL,
@@ -75,11 +95,11 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
     }
 	
 	this.setEol = function(value) {
-		var koDoc 		= require('ko/views').current().koDoc;
-		var prefs 		= require('ko/views').current().prefs;
-		var pref 		= Components.classes["@mozilla.org/preferences-service;1"]
-        .getService(Components.interfaces.nsIPrefService).getBranch("extensions.EOL_widget.");
-		var override	= pref.getBoolPref('preserveExisting') ? false : true;
+		var koDoc 		= require('ko/views').current().koDoc,
+			prefs 		= require('ko/views').current().prefs,
+			pref 		= Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService).getBranch("extensions.EOL_widget."),
+			override	= pref.getBoolPref('preserveExisting') ? false : true;
 		if ( ! prefs) return;
 		
 		prefs.setString('endOfLine', value);
