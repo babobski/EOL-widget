@@ -43,9 +43,8 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
 	}
 	
     this.addEOL = function(){ 
-		var koDoc 	= require('ko/views').current().koDoc,
-			prefs 	= require('ko/views').current().prefs,
-			view 	= ko.views.manager.currentView,
+		var view 	= require('ko/views').current(),
+			prefs 	= view.prefs,
 			currV	= require("ko/views").current().get(),
 			panel   = $(currV).find('#eol_widget'),
 			button 	= $(currV).find('#statusbar-eol-label');
@@ -68,9 +67,8 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
     };
     
     this.checkEOL = function() {
-		var view 	= ko.views.manager.currentView,
-			koDoc 	= require('ko/views').current().koDoc,
-			prefs 	= require('ko/views').current().prefs;
+		var view 	= require('ko/views').current(),
+			prefs 	= view.prefs;
 			
 		if (view.length === 0){
             return;
@@ -95,8 +93,9 @@ if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
     }
 	
 	this.setEol = function(value) {
-		var koDoc 		= require('ko/views').current().koDoc,
-			prefs 		= require('ko/views').current().prefs,
+		var view		= require('ko/views').current(),
+			koDoc 		= view.koDoc,
+			prefs 		= view.prefs,
 			pref 		= Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService).getBranch("extensions.EOL_widget."),
 			override	= pref.getBoolPref('preserveExisting') ? false : true;
