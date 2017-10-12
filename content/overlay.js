@@ -3,7 +3,7 @@
  */
 if (typeof(extensions) === 'undefined') extensions = {};
 if (typeof(extensions.EOL_widget) === 'undefined') extensions.EOL_widget = {
-	version: '2.1'
+	version: '2.2'
 };
 
 (function() {

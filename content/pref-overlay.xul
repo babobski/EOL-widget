@@ -7,13 +7,20 @@
      title="EOL widget"
 	 xmlns:html="http://www.w3.org/1999/xhtml"
 	 width="300"
-	 height="200"
+	 height="140"
+	 hidechrome="true"
      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
-	<prefpane id="EOL-widget-pane" label="EOL widget">
+	
+	<prefpane id="EOL-widget-pane" label="EOL widget" style="padding-top: 0;">
 		<preferences>
 			<preference id="pref_preserveExisting" name="extensions.EOL_widget.preserveExisting" type="bool"/>
 		</preferences>
+		<titlebar id="EOLTitleBar" height="40" width="100%"  style="background: transparent; z-index: 888;">
+			<label flex="1" style="text-align: center; padding: 10px 0; pointer-events: none;">
+				EOL widget
+			</label>
+		</titlebar>
 		<html:h3>
 			Preserve existing line endings 
 		</html:h3>
